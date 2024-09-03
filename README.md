@@ -1,3 +1,5 @@
+# 기존의 lightweight-charts-python에 필요한 툴을 추가하는 Repo 입니다.
+
 <div align="center">
 
 # lightweight-charts-python
@@ -10,16 +12,19 @@
 ![cover](https://raw.githubusercontent.com/louisnw01/lightweight-charts-python/main/cover.png)
 
 lightweight-charts-python aims to provide a simple and pythonic way to access and implement [TradingView's Lightweight Charts](https://www.tradingview.com/lightweight-charts/).
+
 </div>
 
-
 ## Installation
+
 ```
 pip install lightweight-charts
 ```
-___
+
+---
 
 ## Features
+
 1. Streamlined for live data, with methods for updating directly from tick data.
 2. Multi-pane charts using [Subcharts](https://lightweight-charts-python.readthedocs.io/en/latest/reference/abstract_chart.html#AbstractChart.create_subchart).
 3. The [Toolbox](https://lightweight-charts-python.readthedocs.io/en/latest/reference/toolbox.html), allowing for trendlines, rectangles, rays and horizontal lines to be drawn directly onto charts.
@@ -27,10 +32,11 @@ ___
 5. [Tables](https://lightweight-charts-python.readthedocs.io/en/latest/reference/tables.html) for watchlists, order entry, and trade management.
 6. Direct integration of market data through [Polygon.io's](https://polygon.io/?utm_source=affiliate&utm_campaign=pythonlwcharts) market data API.
 
-__Supports:__ Jupyter Notebooks, PyQt6, PyQt5, PySide6, wxPython, Streamlit, and asyncio.
+**Supports:** Jupyter Notebooks, PyQt6, PyQt5, PySide6, wxPython, Streamlit, and asyncio.
 
 PartTimeLarry: [Interactive Brokers API and TradingView Charts in Python](https://www.youtube.com/watch?v=TlhDI3PforA)
-___
+
+---
 
 ### 1. Display data from a csv:
 
@@ -40,18 +46,20 @@ from lightweight_charts import Chart
 
 
 if __name__ == '__main__':
-    
+
     chart = Chart()
-    
-    # Columns: time | open | high | low | close | volume 
+
+    # Columns: time | open | high | low | close | volume
     df = pd.read_csv('ohlcv.csv')
     chart.set(df)
-    
+
     chart.show(block=True)
 
 ```
+
 ![setting_data image](https://raw.githubusercontent.com/louisnw01/lightweight-charts-python/main/examples/1_setting_data/setting_data.png)
-___
+
+---
 
 ### 2. Updating bars in real-time:
 
@@ -72,20 +80,21 @@ if __name__ == '__main__':
     chart.show()
 
     last_close = df1.iloc[-1]['close']
-    
+
     for i, series in df2.iterrows():
         chart.update(series)
 
         if series['close'] > 20 and last_close < 20:
             chart.marker(text='The price crossed $20!')
-            
+
         last_close = series['close']
         sleep(0.1)
 
 ```
 
 ![live data gif](https://github.com/louisnw01/lightweight-charts-python/blob/main/examples/2_live_data/live_data.gif?raw=true)
-___
+
+---
 
 ### 3. Updating bars from tick data in real-time:
 
@@ -96,26 +105,28 @@ from lightweight_charts import Chart
 
 
 if __name__ == '__main__':
-    
+
     df1 = pd.read_csv('ohlc.csv')
-    
-    # Columns: time | price 
+
+    # Columns: time | price
     df2 = pd.read_csv('ticks.csv')
-    
+
     chart = Chart()
-    
+
     chart.set(df1)
-    
+
     chart.show()
-    
+
     for i, tick in df2.iterrows():
         chart.update_from_tick(tick)
-            
+
         sleep(0.03)
 
 ```
+
 ![tick data gif](https://raw.githubusercontent.com/louisnw01/lightweight-charts-python/main/examples/3_tick_data/tick_data.gif)
-___
+
+---
 
 ### 4. Line Indicators:
 
@@ -145,8 +156,10 @@ if __name__ == '__main__':
     chart.show(block=True)
 
 ```
+
 ![line indicators image](https://raw.githubusercontent.com/louisnw01/lightweight-charts-python/main/examples/4_line_indicators/line_indicators.png)
-___
+
+---
 
 ### 5. Styling:
 
@@ -156,7 +169,7 @@ from lightweight_charts import Chart
 
 
 if __name__ == '__main__':
-    
+
     chart = Chart()
 
     df = pd.read_csv('ohlcv.csv')
@@ -182,8 +195,10 @@ if __name__ == '__main__':
     chart.show(block=True)
 
 ```
+
 ![styling image](https://raw.githubusercontent.com/louisnw01/lightweight-charts-python/main/examples/5_styling/styling.png)
-___
+
+---
 
 ### 6. Callbacks:
 
@@ -236,15 +251,19 @@ if __name__ == '__main__':
     chart.show(block=True)
 
 ```
+
 ![callbacks gif](https://raw.githubusercontent.com/louisnw01/lightweight-charts-python/main/examples/6_callbacks/callbacks.gif)
-___
+
+---
 
 <div align="center">
 
 [![Documentation](https://img.shields.io/badge/documentation-006ee3)](https://lightweight-charts-python.readthedocs.io/en/latest/index.html)
 
 Inquiries: [shaders_worker_0e@icloud.com](mailto:shaders_worker_0e@icloud.com)
-___
+
+---
 
 _This package is an independent creation and has not been endorsed, sponsored, or approved by TradingView. The author of this package does not have any official relationship with TradingView, and the package does not represent the views or opinions of TradingView._
+
 </div>
