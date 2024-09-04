@@ -3,7 +3,9 @@ import { CanvasRenderingTarget2D } from "fancy-canvas";
 import { MesureExtendTwoPointDrawingPaneRenderer } from "../drawing/pane-renderer";
 import { MeasureOptions } from "./measure";
 import { setLineStyle } from "../helpers/canvas-rendering";
-import { Point } from "lightweight-charts";
+import { Point } from '../drawing/data-source';
+
+
 
 export class MeasurePaneRenderer extends MesureExtendTwoPointDrawingPaneRenderer {
   declare _options: MeasureOptions;
@@ -19,13 +21,14 @@ export class MeasurePaneRenderer extends MesureExtendTwoPointDrawingPaneRenderer
   }
 
   draw(target: CanvasRenderingTarget2D) {
+    
     target.useBitmapCoordinateSpace((scope) => {
       const ctx = scope.context;
 
       const scaled = this._getScaledCoordinates(scope);
       const points = this._points;
 
-      if (!scaled) return;
+      if (!scaled || !points[0] || !points[1] || !points[0].time || !points[1].price) return; // null 체크 추가
 
       ctx.lineWidth = this._options.width;
       ctx.strokeStyle = this._options.subLineColor;
@@ -41,40 +44,38 @@ export class MeasurePaneRenderer extends MesureExtendTwoPointDrawingPaneRenderer
       ctx.strokeRect(mainX, mainY, width, height);
       ctx.fillRect(mainX, mainY, width, height);
 
-      // Calculate the difference in X and Y
-      //   const priceDifference = Math.abs(scaled.y1 - scaled.y2);
-      //   const priceRatio = (scaled.y1 - scaled.y2) / scaled.y2;
-      //   const timeDifference = Math.abs(scaled.x1 - scaled.x2);
-      //   const percentageDifference = (
-      //     (priceDifference / scaled.y1) *
-      //     100
-      //   ).toFixed(2);
-      const priceDifference = points[1].price - points[0].price;
-      const priceRatio = ((priceDifference / points[0].price) * 100).toFixed(2);
-      const timeDifference = points[1].time - points[0].time;
 
+      const price1 = points[0].price ?? 0; 
+      const price2 = points[1].price ?? 0;
+      const time1 = points[0].time ?? 0;
+      const time2 = points[1].time ?? 0;
+
+      const priceDifference = price2 - price1;
+      const priceRatio = ((priceDifference / price1) * 100).toFixed(2);
+      const timeDifference = Number(time2) - Number(time1);
       // Draw circles at the corners when hovered
-      if (!this._hovered) return;
-
-      // this._drawEndCircle(scope, mainX, mainY);
-      // this._drawEndCircle(scope, mainX + width, mainY);
-      // this._drawEndCircle(scope, mainX + width, mainY + height);
-      // this._drawEndCircle(scope, mainX, mainY + height);
-
+      // if (!this._hovered) return;
       target.useMediaCoordinateSpace(({ context: ctx, mediaSize }) => {
         ctx.font = "12px Arial"; // 폰트 설정
         ctx.fillStyle = "white";
 
         const text = "";
         const textMetrics = ctx.measureText(text);
-        let textX = mediaSize.width / 2 - textMetrics.width / 2;
-        let textY = mediaSize.height / 2;
+        console.log(this._p1, this._p2);
+        
+        let textX = 0;
+        let textY = 0;
+
+        // p1과 p2의 null 체크 추가
+        if (this._p1.x && this._p2.x && this._p1.y && this._p2.y) {
+          textX = (this._p1.x + this._p2.x) / 2;
+          textY = (this._p1.y + this._p2.y) / 2;
+        }
+
         ctx.textAlign = "center"; // 텍스트가 중심에 맞추어 그려지도록 설정
         ctx.textBaseline = "middle"; // 텍스트의 세로 기준을 중앙으로 설정
         ctx.fillText(`${convertSecondsToTime(timeDifference)}`, textX, textY);
 
-        // const textX =this._p1.x
-        // const textY = this._p1.y
         textY -= 15; // 다음 텍스트 위치 조정
         ctx.fillText(
           `${priceDifference.toFixed(2)}(${priceRatio}%), ${Math.ceil(
