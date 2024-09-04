@@ -33,7 +33,8 @@ export class MeasurePaneRenderer extends MesureExtendTwoPointDrawingPaneRenderer
       ctx.lineWidth = this._options.width;
       ctx.strokeStyle = this._options.subLineColor;
       setLineStyle(ctx, this._options.lineStyle);
-      ctx.fillStyle = this._options.fillColor;
+      ctx.fillStyle = this._options.subLineColor;
+      
 
       const mainX = Math.min(scaled.x1, scaled.x2);
       const mainY = Math.min(scaled.y1, scaled.y2);
@@ -61,7 +62,7 @@ export class MeasurePaneRenderer extends MesureExtendTwoPointDrawingPaneRenderer
 
         const text = "";
         const textMetrics = ctx.measureText(text);
-        console.log(this._p1, this._p2);
+        
         
         let textX = 0;
         let textY = 0;
