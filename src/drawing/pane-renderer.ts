@@ -1,4 +1,4 @@
-import { ISeriesPrimitivePaneRenderer } from "lightweight-charts";
+import { ISeriesPrimitivePaneRenderer, Point } from "lightweight-charts";
 import { ViewPoint } from "./pane-view";
 import { DrawingOptions } from "./options";
 import { BitmapCoordinatesRenderingScope, CanvasRenderingTarget2D } from "fancy-canvas";
@@ -62,4 +62,25 @@ export abstract class TwoPointDrawingPaneRenderer extends DrawingPaneRenderer {
         scope.context.fill();
         // scope.context.strokeStyle = this._options.lineColor;
     }
+}
+
+export abstract class MeasureDrawingPaneRenderer implements ISeriesPrimitivePaneRenderer {
+    _options: DrawingOptions;
+    constructor(options: DrawingOptions) {
+        this._options = options;
+    }
+    abstract draw(target: CanvasRenderingTarget2D): void;
+}
+
+export abstract class MesureExtendTwoPointDrawingPaneRenderer extends TwoPointDrawingPaneRenderer {
+    _points: (Point | null)[];
+    constructor(p1: ViewPoint, p2: ViewPoint, options: DrawingOptions, hovered: boolean, points: (Point | null)[]) {
+        // 부모 클래스의 생성자를 호출하여 기본 설정을 초기화합니다.
+        super(p1, p2, options, hovered);
+        this._points = points;
+    }
+    // 필요한 경우 draw 메서드를 추가적으로 구현합니다.
+    abstract draw(target: CanvasRenderingTarget2D): void;
+    // 필요한 추가적인 메서드나 옵션은 여기에 작성합니다.
+    // 예: points 관련 추가 로직 등
 }
