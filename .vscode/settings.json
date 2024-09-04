@@ -1,0 +1,14 @@
+{
+	"json.format.enable": true,
+	"editor.formatOnSave": false, // 저장 시 자동 포맷팅 비활성화
+	"editor.formatOnType": false, // 입력 시 자동 포맷팅 비활성화
+	"editor.tabSize": 4, // 탭 크기 설정
+	"editor.insertSpaces": true, // 스페이스 대신 탭 사용
+	"editor.wordWrapColumn": 100, // 한 줄 최대 길이 설정
+	"editor.wordWrap": "off", // 자동 줄바꿈 비활성화
+	"[markdown]": {
+		"editor.wordWrap": "off" // 마크다운에서 자동 줄바꿈 비활성화
+	},
+	"prettier.useTabs": true, // 탭을 사용하여 포맷팅
+	"prettier.tabWidth": 4 // 탭 너비 설정
+}
