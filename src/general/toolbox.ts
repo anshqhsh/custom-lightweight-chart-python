@@ -66,8 +66,8 @@ export class ToolBox {
         this.buttons.push(this._makeToolBoxElement(HorizontalLine, 'KeyH', ToolBox.HORZ_SVG));
         this.buttons.push(this._makeToolBoxElement(RayLine, 'KeyR', ToolBox.RAY_SVG));
         this.buttons.push(this._makeToolBoxElement(Box, 'KeyB', ToolBox.BOX_SVG));
-        this.buttons.push(this._makeToolBoxElement(Measure, "KeyM", ToolBox.MESURE_SVG));
         this.buttons.push(this._makeToolBoxElement(VerticalLine, 'KeyV', ToolBox.VERT_SVG, true));
+        this.buttons.push(this._makeToolBoxElement(Measure, "KeyM", ToolBox.MESURE_SVG));
         for (const button of this.buttons) {
             div.appendChild(button);
         }

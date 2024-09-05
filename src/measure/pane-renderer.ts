@@ -57,12 +57,20 @@ export class MeasurePaneRenderer extends MesureExtendTwoPointDrawingPaneRenderer
       // Draw circles at the corners when hovered
       // if (!this._hovered) return;
       target.useMediaCoordinateSpace(({ context: ctx, mediaSize }) => {
-        ctx.font = "12px Arial"; // 폰트 설정
+        ctx.font = "10px Arial"; // 폰트 설정
         ctx.fillStyle = "white";
 
-        const text = "";
-        const textMetrics = ctx.measureText(text);
+        const priceDifferenceText = `${priceDifference.toFixed(2)}(${priceRatio}%), ${Math.ceil(priceDifference)}`;
+        const timeDifferenceText = `${convertSecondsToTime(timeDifference)}`;
+
+        // Measure the text width and height to determine the size of the background box
+        const priceTextMetrics = ctx.measureText(priceDifferenceText);
+        const timeTextMetrics = ctx.measureText(timeDifferenceText);
         
+        const padding = 12; // Padding around the text inside the box
+        const boxWidth = Math.max(priceTextMetrics.width, timeTextMetrics.width) + padding * 2;
+        const boxHeight = 34; // Set height considering both lines of text with padding
+        const borderRadius = 6;
         
         let textX = 0;
         let textY = 0;
@@ -70,22 +78,21 @@ export class MeasurePaneRenderer extends MesureExtendTwoPointDrawingPaneRenderer
         // p1과 p2의 null 체크 추가
         if (this._p1.x && this._p2.x && this._p1.y && this._p2.y) {
           textX = (this._p1.x + this._p2.x) / 2;
-          textY = (this._p1.y + this._p2.y) / 2;
+          textY = (this._p2.y) - 24
         }
+        // Draw the background box behind the text
+        ctx.fillStyle = this._options.lineColor; // Background color with some transparency
+        // drawRoundedRect(ctx, textX - boxWidth / 2, textY - boxHeight / 2, boxWidth, boxHeight, borderRadius);
+        ctx.fillRect(textX - boxWidth / 2, textY - boxHeight / 2, boxWidth, boxHeight);
 
+        // Draw the time difference text
+        ctx.fillStyle = "white"; // Text color
         ctx.textAlign = "center"; // 텍스트가 중심에 맞추어 그려지도록 설정
         ctx.textBaseline = "middle"; // 텍스트의 세로 기준을 중앙으로 설정
-        ctx.fillText(`${convertSecondsToTime(timeDifference)}`, textX, textY);
-
-        textY -= 15; // 다음 텍스트 위치 조정
-        ctx.fillText(
-          `${priceDifference.toFixed(2)}(${priceRatio}%), ${Math.ceil(
-            priceDifference
-          )}`,
-          textX,
-          textY
-        );
-        textY -= 15; // 다음 텍스트 위치 조정
+        
+        // Draw the price difference text
+        ctx.fillText(priceDifferenceText, textX, textY  - 8); // Draw price text below the time text
+        ctx.fillText(timeDifferenceText, textX, textY +8); // Draw time text at the top line
       });
     });
   }
@@ -99,3 +106,20 @@ function convertSecondsToTime(totalSeconds: number) {
 
   return `${hours}h ${minutes}m`;
 }
+
+
+// Function to draw a rounded rectangle
+// function drawRoundedRect(ctx, x, y, width, height, radius) {
+//   ctx.beginPath();
+//   ctx.moveTo(x + radius, y);
+//   ctx.lineTo(x + width - radius, y);
+//   ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+//   ctx.lineTo(x + width, y + height - radius);
+//   ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+//   ctx.lineTo(x + radius, y + height);
+//   ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+//   ctx.lineTo(x, y + radius);
+//   ctx.quadraticCurveTo(x, y, x + radius, y);
+//   ctx.closePath();
+//   ctx.fill();
+// }
