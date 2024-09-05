@@ -78,7 +78,7 @@ export class MeasurePaneRenderer extends MesureExtendTwoPointDrawingPaneRenderer
         // p1과 p2의 null 체크 추가
         if (this._p1.x && this._p2.x && this._p1.y && this._p2.y) {
           textX = (this._p1.x + this._p2.x) / 2;
-          textY = (this._p2.y) - 24
+          textY = Math.min(this._p1.y, this._p2.y) - 24; // 사각형을 그릴 위치 계산
         }
         // Draw the background box behind the text
         ctx.fillStyle = this._options.lineColor; // Background color with some transparency
