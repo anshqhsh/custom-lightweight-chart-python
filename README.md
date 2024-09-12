@@ -1,5 +1,14 @@
 # 기존의 lightweight-charts-python에 필요한 툴을 추가하는 Repo 입니다.
 
+## Ruler
+<img width="496" alt="스크린샷 2024-09-12 오후 9 45 49" src="https://github.com/user-attachments/assets/9023fb03-8ff3-4380-b3d9-68a48b2a0dbc">
+
+### How to Use
+- Click the Measure button.
+- Click to set the first point, then click to set the next point.
+- A range rectangle will be created between the two points.
+- The price difference, percentage change, and time difference between the selected points will be displayed.
+
 <div align="center">
 
 # lightweight-charts-python
